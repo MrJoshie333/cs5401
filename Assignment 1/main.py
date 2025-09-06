@@ -82,7 +82,58 @@ def p1_1_1():
     plot_before_after(image, fd, 'fd')
 
 
+def p1_1_2():
+    image = load_image("Homework 1 image.png")[::4, ::4,
+            0]
+    def plot_image(image, filt, title):
+        fig = plt.figure(figsize=(3, 3), dpi=300)
+
+        plt.title("Filter")
+        plt.imshow(scipy.signal.convolve(
+            image, filt, mode='same'), cmap = 'seismic', vmin=-0.4, vmax=0.4)
+        plt.title(title)
+        plt.colorbar()
+        plt.show()
+
+
+    hf = [
+        [1, 0, -1],
+        [2, 0, -2],
+        [1, 0, -1]
+    ]
+    vf = [
+        [1, 2, 1],
+        [0, 0, 0],
+        [-1, -2, -1]
+    ]
+
+    plot_image(image, hf, 'hf')
+    plot_image(image, vf, 'vf')
+
+    # Plotting Gradient, Angle, and Amplitude:
+
+    Ix = scipy.signal.convolve(
+        image, hf, mode='same')
+    Iy = scipy.signal.convolve(
+        image, vf, mode='same')
+
+    gradI = np.sqrt((Ix) ** 2 + (Iy) ** 2)
+    angleI = np.atan2(Ix, Iy)
+
+    cmap = 'seismic'
+    plt.figure(figsize=(12, 4))
+    plt.subplot(1, 2, 1)
+    plt.imshow(gradI, cmap="coolwarm")
+    plt.title("Gradient Amplitude")
+    plt.colorbar()
+    plt.subplot(1, 2, 2)
+    plt.imshow(angleI, vmin=-5, vmax=5, cmap="twilight")
+    plt.colorbar()
+    plt.title("Gradient Angle")
+    plt.show()
+
 
 #Function to run:
 # p1_1()
 # p1_1_1()
+p1_1_2()
